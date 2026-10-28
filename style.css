@@ -33,6 +33,7 @@
     text-align: center;
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px solid var(--border-color);
   }
 
   .header-logo {
@@ -47,5 +48,10 @@
     padding: 0.5rem 1rem;
     align-items: center;
     border-radius: 20%;
-
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+
