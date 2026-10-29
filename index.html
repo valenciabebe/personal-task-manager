@@ -51,29 +51,32 @@
             <h2 id="form-header"> &plus; Add New Task</h2>
             <p>write it down,then take it one step at a time.</p>
 
-            <form action="">
+            <form action="" class="task-form" id="task-form">
                 <div>
-                    <label for="task-title">Task Title*</label>
+                    <label for="task-title" class="task-label">Task Title*</label>
                     <input type="text" id="task-title" name="task-title" placeholder="group meeting by 9PM">
                 </div>
                 <div>
-                    <label for="task-description">Description</label>
+                    <label for="task-description" class="task-label">Description</label>
                     <textarea name="task-description" id="task-description" rows="3" maxlength="500"></textarea>
                 </div>
-                <div>
-                    <label for="task-priority">Priority*</label>
-                    <select name="task-priority" id="task-priority" required>
-                        <option value="select" selected>Select</option>
-                        <option value="low">Low</option>
-                        <option value="medium" >Medium</option>
-                        <option value="high">High</option>
-                    </select>
+                <div class="screen-alignment"> 
+                   <div>
+                        <label for="task-priority" class="task-label">Priority*</label>
+                        <select name="task-priority" id="task-priority" required>
+                            <option value="select" selected>Select</option>
+                            <option value="low">Low</option>
+                            <option value="medium" >Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="task-due-date" class="task-label">Due Date*</label>
+                        <input type="datetime-local" name="task-due-date" id="task-due-date" required>
+                    </div>
+ 
                 </div>
-                <div>
-                    <label for="task-due-date">Due Date*</label>
-                    <input type="datetime-local" name="task-due-date" id="task-due-date" required>
-                </div>
-
+                
                 <button type="submit" id="add-task-btn" >Add Task</button>
             </form>
         </section>
