@@ -6,7 +6,7 @@
     <title>Taskflow</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" referrerpolicy="no-referrer" />
-
+    <script src="./script.js" defer></script>
 </head>
 <body>
     <header class="task-header">
@@ -52,7 +52,7 @@
             <form action="" class="task-form" id="task-form">
                 <div>
                     <label for="task-title" class="task-label">Task Title*</label>
-                    <input type="text" id="task-title" name="task-title" placeholder="group meeting by 9PM">
+                    <input type="text" id="task-title" name="task-title" placeholder="group meeting by 9PM" required>
                 </div>
                 <div>
                     <label for="task-description" class="task-label">Description</label>
@@ -93,21 +93,21 @@
                 </div>
 
                 <div class="select-status" role="group" aria-label="select-status-task">
-                    <button class="select-status-btn">All</button>
-                    <button class="select-status-btn">Pending</button>
-                    <button class="select-status-btn">Completed</button>
+                    <button class="select-status-btn" data-filter="all">All</button>
+                    <button class="select-status-btn" data-filter="pending">Pending</button>
+                    <button class="select-status-btn" data-filter="completed">Completed</button>
                 </div>
             </div>
 
             <div>
                 <div class="search-container">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="search" placeholder="search your tasks">
+                    <input type="search" placeholder="search your tasks" id="task-search">
                 </div>
             </div>
 
            <ul id="task-flow" class="task-flow"></ul>
-           <p id="empty task" class="empty" hidden> No tasks to show yet</p>
+           <p id="empty-task" class="empty" hidden> No tasks to show yet</p>
         </section>  
     </main>
     
