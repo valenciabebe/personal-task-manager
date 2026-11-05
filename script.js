@@ -21,22 +21,22 @@ const statusButtons = document.querySelectorAll(".select-status-btn");
 // Load and save in Local storage
 
 function loadTasks(){
-    try{
-        const data = localStorage.getItem(STORAGE_KEY);
-        const parsed = data ? JSON.parse(data) : [];
-        return Array.isArray(parsed) ? parsed : [];
-    } catch(error){
-        console.log("could not read saved tasks: ", error);
-        return [];
-    }
+  try{
+    const data = localStorage.getItem(STORAGE_KEY);
+    const parsed = data ? JSON.parse(data) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch(error){
+      console.log("could not read saved tasks: ", error);
+      return [];
+  }
 }
 
 function saveTasks (){
     try{
-        localStorage.setItem(STORAGE_KEY, JSON.stringify (tasks));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify (tasks));
     } catch (error){
-        console.log("Could not save tasks:", error);
-        alert("Your tasks could not be saved. Storage may be full or disabled.");
+      console.log("Could not save tasks:", error);
+      alert("Your tasks could not be saved. Storage may be full or disabled.");
     }
 }
 
@@ -44,11 +44,12 @@ function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 }
 
+
 function todayString() {
-  const d = new Date();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${d.getFullYear()}-${month}-${day}`;
+  const today = new Date();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${today.getFullYear()}-${month}-${day}`;
 }
 
 function formatDate(dateStr) {
@@ -56,4 +57,85 @@ function formatDate(dateStr) {
   return new Date(y, m - 1, d).toLocaleDateString(undefined, {
     year: "numeric", month: "short", day: "numeric",
   });
+}
+
+//----------- Form Validation-------------
+function showError(input, message) {
+  document.getElementById(`${input.id}-error`).textContent = message;
+  input.classList.toggle("invalid", Boolean(message));
+}
+
+function clearErrors() {
+  [titleInput, descriptionInput, priorityInput, dueDateInput].forEach((element) => showError(element, ""));
+}
+
+
+function validateForm() {
+  clearErrors();
+  let valid = true;
+
+  const title = titleInput.value.trim();
+  if (!title) {
+    showError(titleInput, "Title is required.");
+    valid = false;
+  } else if (title.length < 3) {
+    showError(titleInput, "Title must be at least 3 characters.");
+    valid = false;
+  }
+
+  if (descInput.value.trim().length > 200) {
+    showError(descInput, "Description cannot exceed 200 characters.");
+    valid = false;
+  }
+
+  if (!priorityInput.value) {
+    showError(priorityInput, "Please choose a priority.");
+    valid = false;
+  }
+
+  const due = dueDateInput.value;
+  if (!due) {
+    showError(dueDateInput, "Due date is required.");
+    valid = false;
+  } else {
+    const existing = tasks.find((t) => t.id === idInput.value);
+    const dateChanged = !existing || existing.dueDate !== due;
+    if (dateChanged && due < todayString()) {
+      showError(dueDateInput, "Due date cannot be in the past.");
+      valid = false;
+    }
+  }
+
+  return valid;
+}
+
+
+//--------- Task Operations ------------
+function addTask(data) {
+  tasks.push({ id: generateId(), completed: false, createdAt: Date.now(), ...data });
+}
+
+function updateTask(id, data) {
+  const task = tasks.find((t) => t.id === id);
+  if (task) Object.assign(task, data);
+}
+
+function deleteTask(id) {
+  const task = tasks.find((t) => t.id === id);
+  if (!task) return;
+  if (confirm(`Delete "${task.title}"?`)) {
+    tasks = tasks.filter((t) => t.id !== id);
+    if (idInput.value === id) resetForm();
+    saveTasks();
+    renderTasks();
+  }
+}
+
+function toggleComplete(id) {
+  const task = tasks.find((t) => t.id === id);
+  if (task) {
+    task.completed = !task.completed;
+    saveTasks();
+    renderTasks();
+  }
 }
